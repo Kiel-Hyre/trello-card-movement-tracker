@@ -4,24 +4,12 @@ import config from '../../config/config.js';
 
 const router = express.Router();
 
-const { TRELLO_BASE_URL, TRELLO_API_KEY, TRELLO_TOKEN, APPSCRIPT_HOOK_URL } = config;
-
-async function getListName(idList) {
-  const url = `${TRELLO_BASE_URL}/lists/${idList}?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}`;
-  try {
-    const response = await axios.get(url);
-    return response.data.name;
-  } catch (error) {
-    console.error('Error fetching list name:', error);
-    return null;
-  }
-}
+const { APPSCRIPT_HOOK_URL } = config;
 
 
 router.get('/webhook', (req, res) => {
   res.status(200).send('OK'); // Must respond with 200 and 'OK' content
 });
-
 
 router.post('/webhook', async (req, res) => {
   try {
@@ -33,8 +21,8 @@ router.post('/webhook', async (req, res) => {
       const timestamp = payload.action.date;
 
       // Fetch old and new list names
-      const oldListName = await getListName(payload.action.data.listBefore.name);
-      const newListName = await getListName(payload.action.data.listAfter.name);
+      const oldListName = payload.action.data.listBefore.name;
+      const newListName = payload.action.data.listAfter.name;
 
       // Prepare response data
       const details = {
