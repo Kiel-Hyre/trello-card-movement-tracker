@@ -37,12 +37,19 @@ router.post('/webhook', async (req, res) => {
       const newListName = await getListName(card.idList);
 
       // Prepare response data
+      // const details = {
+      //   cardName: card.name,
+      //   // oldListName,
+      //   // newListName,
+      //   timestamp,
+      // };
+
       const details = {
         cardName: card.name,
         // oldListName,
         // newListName,
-        TRELLO_BASE_URL,
-        JSON.stringify(payload),
+        oldListName: TRELLO_BASE_URL, // Assuming TRELLO_BASE_URL is defined
+        newListName: JSON.stringify(payload),
         timestamp,
       };
 
