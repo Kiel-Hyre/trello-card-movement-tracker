@@ -17,7 +17,7 @@
     "export-card-history-sheets": "node src/scripts/exportTrelloCardsHistorySheets.js",
     "event-card-history": "node src/scripts/eventTrelloCardsHistory.js"
   },
-  "author": "Kiel <vinceadisip@gmail.com>",
+  "author": "Vince Isip <vinceadisip@gmail.com>",
   "license": "ISC",
   "description": "Token of Trust Trello Integration",
   "dependencies": {
