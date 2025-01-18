@@ -85,3 +85,5 @@
 ### Screenshots and Outputs
 
 - Uploaded here in [Gdrive](https://drive.google.com/drive/folders/1Ww6_E1A5NDja5rQiNeewrsbVGjH7tE17?usp=sharing)
+- env keys are here also for the sake of demonstration
+- For CSV file [search here](https://github.com/Kiel-Hyre/trello-card-movement-tracker/tree/main/src/tmp)
