@@ -1,14 +1,12 @@
 import { Router } from 'express';
 import config from '../../config/config.js';
 import docsRoute from './docs.route.js'; // Import the default export from docs.route.js
+import trelloRoute from './trello.route.js';
 
 const router = Router();
 
 const defaultRoutes = [
-  // Add default routes here
-  // Example:
-  // { path: '/auth', route: authRoute },
-  // { path: '/users', route: userRoute },
+  { path: '/trello', route: trelloRoute }
 ];
 
 const devRoutes = [
