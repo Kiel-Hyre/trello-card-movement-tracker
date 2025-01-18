@@ -17,6 +17,12 @@ async function getListName(idList) {
   }
 }
 
+
+router.get('/webhook', (req, res) => {
+  res.status(200).send('OK'); // Must respond with 200 and 'OK' content
+});
+
+
 router.post('/webhook', async (req, res) => {
   try {
     const payload = req.body;
