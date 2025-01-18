@@ -7,15 +7,14 @@ WORKDIR /usr/src/node-app
 # Copy only the package.json and package-lock.json first
 COPY package.json package-lock.json ./
 
-# Switch to a non-root user for better security
-RUN addgroup -S nodegroup && adduser -S node -G nodegroup
-USER node
-
 # Install dependencies using npm
 RUN npm install --only=production
 
 # Copy the rest of the application code
 COPY --chown=node:node . .
+
+# Switch to the existing non-root user for better security
+USER node
 
 # Expose the application port
 EXPOSE 3000
