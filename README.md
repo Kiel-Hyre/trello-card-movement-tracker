@@ -82,6 +82,12 @@
 - Will get or create src/tmp/even_card_movements.csv
 - Append the new event in that file.
 
+8. Bonus Step 8: Trello Hook to Sheets
+
+- This is connected to trello via /webhook
+- In which will update the sheet live as the user will move the cards on the board lists
+- [Viewable here](https://docs.google.com/spreadsheets/d/16ujg-jDSlPYG6t7ic7kiGCoGSOoPzeXAFj9mJRMaQRA/edit?usp=sharing)
+
 ### Screenshots and Outputs
 
 - Uploaded here in [Gdrive](https://drive.google.com/drive/folders/1Ww6_E1A5NDja5rQiNeewrsbVGjH7tE17?usp=sharing)
