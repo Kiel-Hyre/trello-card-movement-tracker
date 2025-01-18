@@ -29,7 +29,7 @@ const eventTrelloCardsHistory = async (boardId, cardName, oldList, newList, time
       console.log(`New row appended to ${FILE_PATH}`);
     }
     return;
-    
+
   } else {
     console.log('File not found. Creating a new file...');
     fs.writeFileSync(FILE_PATH, headers); // Create the file with headers
@@ -63,9 +63,10 @@ const eventTrelloCardsHistory = async (boardId, cardName, oldList, newList, time
     console.log('No card movement events found.');
   } else {
     console.log(`Writing ${movements.length} card movement events to CSV...`);
-    const filePath = await exportCardActions(movements, 'event_card_movements.csv');
-    console.log(`Card movement data saved to ${filePath}`);
   }
+
+  const filePath = await exportCardActions(movements, 'event_card_movements.csv');
+  console.log(`Card movement data saved to ${filePath}`);
 };
 
 // Get board ID from command-line arguments or exit if not provided

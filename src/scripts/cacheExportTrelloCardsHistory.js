@@ -63,9 +63,10 @@ const cacheExportTrelloCardsHistory = async (boardId) => {
     console.log('No card movement events found.');
   } else {
     console.log(`Writing ${movements.length} card movement events to CSV...`);
-    const filePath = await exportCardActions(movements, 'cached_card_movements.csv');
-    console.log(`Card movement data saved to ${filePath}`);
   }
+
+  const filePath = await exportCardActions(movements, 'cached_card_movements.csv');
+  console.log(`Card movement data saved to ${filePath}`);
 };
 
 // Get board ID from command-line arguments or exit if not provided

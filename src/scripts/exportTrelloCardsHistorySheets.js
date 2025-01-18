@@ -31,9 +31,10 @@ const exportTrelloCardsHistorySheets = async (boardId) => {
     console.log('No card movement events found.');
   } else {
     console.log(`Writing ${movements.length} card movement events to CSV...`);
-    const {message} = await exportCardActionsSheets(movements)
-    console.log(`Card movement data saved. ${message}`);
   }
+
+  const {message} = await exportCardActionsSheets(movements)
+  console.log(`Card movement data saved. ${message}`);
 };
 
 
