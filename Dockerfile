@@ -20,6 +20,6 @@ USER node
 EXPOSE 3000
 
 # Default command to run the application
-# CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev"]
 
 # CMD ["npm", "run", "start"]
