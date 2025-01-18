@@ -7,7 +7,7 @@ const router = express.Router();
 const { TRELLO_BASE_URL, TRELLO_API_KEY, TRELLO_TOKEN, APPSCRIPT_HOOK_URL } = config;
 
 async function getListName(idList) {
-  const url = `${TRELLO_BASE_URL}/1/lists/${idList}?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}`;
+  const url = `${TRELLO_BASE_URL}/lists/${idList}?key=${TRELLO_API_KEY}&token=${TRELLO_TOKEN}`;
   try {
     const response = await axios.get(url);
     return response.data.name;
@@ -29,27 +29,18 @@ router.post('/webhook', async (req, res) => {
 
     // Validate action type
     if (payload?.action?.type === 'updateCard' && payload?.action?.data?.old?.idList) {
-      const { card, old } = payload.action.data;
+
       const timestamp = payload.action.date;
 
       // Fetch old and new list names
-      const oldListName = await getListName(old.idList);
-      const newListName = await getListName(card.idList);
+      const oldListName = await getListName(payload.action.data.listBefore.name);
+      const newListName = await getListName(payload.action.data.listAfter.name);
 
       // Prepare response data
-      // const details = {
-      //   cardName: card.name,
-      //   // oldListName,
-      //   // newListName,
-      //   timestamp,
-      // };
-
       const details = {
         cardName: card.name,
-        // oldListName,
-        // newListName,
-        oldListName: TRELLO_BASE_URL, // Assuming TRELLO_BASE_URL is defined
-        newListName: JSON.stringify(payload),
+        oldListName,
+        newListName,
         timestamp,
       };
 
