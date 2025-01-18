@@ -22,14 +22,14 @@ router.post('/webhook', async (req, res) => {
 
       // Fetch old and new list names
       const cardName = payload.action.data.card.name;
-      const oldListName = payload.action.data.listBefore.name;
-      const newListName = payload.action.data.listAfter.name;
+      const oldList = payload.action.data.listBefore.name;
+      const newList = payload.action.data.listAfter.name;
 
       // Prepare response data
       const details = {
         cardName,
-        oldListName,
-        newListName,
+        oldList,
+        newList,
         timestamp,
       };
 
