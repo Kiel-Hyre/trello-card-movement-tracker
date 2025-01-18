@@ -54,6 +54,7 @@
 
 - Running in Jest
 - Created test scripts for services that was used by scripts, most functionalities are in services rather in actual scripts.
+- All test scripts under test\scripts\
 
 5. Step 5: Caching
 
