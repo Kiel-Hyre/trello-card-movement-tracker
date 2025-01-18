@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- [https://nodejs.org/en](Node v20.10.0)
+- [Node v20.10.0](https://nodejs.org/en)
 - NPM
 - .env
 
@@ -70,7 +70,7 @@
 ```
 
 - When executed it will update the google sheet provided with new value instead of saving in sheets
-- [https://docs.google.com/spreadsheets/d/16ujg-jDSlPYG6t7ic7kiGCoGSOoPzeXAFj9mJRMaQRA/edit?usp=sharing](Viewable here)
+- [Viewable here](https://docs.google.com/spreadsheets/d/16ujg-jDSlPYG6t7ic7kiGCoGSOoPzeXAFj9mJRMaQRA/edit?usp=sharing)
 
 7. Step 7: Incremental CSV Updates
 
@@ -83,4 +83,4 @@
 
 ### Screenshots and Outputs
 
-- Uploaded here in [https://drive.google.com/drive/folders/1Ww6_E1A5NDja5rQiNeewrsbVGjH7tE17?usp=sharing](Gdrive)
+- Uploaded here in [Gdrive](https://drive.google.com/drive/folders/1Ww6_E1A5NDja5rQiNeewrsbVGjH7tE17?usp=sharing)
