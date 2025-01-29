@@ -27,4 +27,4 @@ Card Id,Card Name,From Board Id,From Board Name,From List Id,From List Name,To B
 679918cf30bbdd551934edbb,This is another board,67979f362bf491a59f33059c,Another Board,67979f51078ee776e4bb7127,Doing,,,,,2025-01-28T17:50:07.726Z,Created Card
 67991aea0e90a810c227cd11,Hi Board,67979f362bf491a59f33059c,Another Board,67979f51078ee776e4bb7127,Doing,,,,,2025-01-28T17:59:06.307Z,Created Card
 67991aea0e90a810c227cd11,Hi Board,67979f362bf491a59f33059c,Another Board,67979f51078ee776e4bb7127,Doing,67979f362bf491a59f33059c,Another Board,6797a0afc369442dc90eedd6,DONE,2025-01-28T17:59:29.280Z,Update Card
-67998a360fbf822275634157,this is a sample,6784485a4eab4508877d9714,Test-Board,6784485a4eab4508877d971b,To Do,,,,,2025-01-29T01:53:58.231Z,Created Card
+67998a360fbf822275634157,this is a sample,6784485a4eab4508877d9714,Test-Board,6784485a4eab4508877d971b,To Do,null,null,null,null,2025-01-29T01:53:58.231Z,Created Card
