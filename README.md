@@ -32,18 +32,25 @@
   npm run get-boards
 ```
 
+- List all boards
+
 2. Step 2: Fetch Card Data
 
 ```
-  npm run get-card-history <board_id>
+  npm run get-cards-history <board_id>
 ```
+
+- Get Cards history base on Board Id
 
 3. Step 3: Generate CSV File
 
 ```
-  npm run export-card-history <board_id>
+  npm run export-cards-history
 ```
 
+- Get Cards from all boards
+- List down Cards history
+- Export to CSV
 - Generated under src/tmp/card_movements.csv
 
 4. Step 4: Code Quality & Testing
@@ -59,15 +66,21 @@
 5. Step 5: Caching
 
 ```
-  npm run cached-export-card-history <board_id>
+  npm run cached-export-cards-history
 ```
 
-- Checking if last log was older than 24, if yes retrieve new data and save under src/tmp/cached_card_movements.csv
+- Check if existing src/tmp/cache_timelog.txt
+- If not create new one
+- Check if existing src/tmp/cache_card_movements.csv
+- If not create new one, fetch data
+- If timelog exists, check if outdated
+- If outdated, fetch from timelog to today
+- Update src/tmp/cache_card_movements.csv
 
 6. Step 6: Google Sheets Integration
 
 ```
-  npm run export-card-history-sheets <board_id>
+  npm run export-cards-history-sheets
 ```
 
 - When executed it will update the google sheet provided with new value instead of saving in sheets
@@ -76,21 +89,32 @@
 7. Step 7: Incremental CSV Updates
 
 ```
-  npm run event-card-history <board_id> <cardName> <oldId> <newId> <timeStamp>
+  npm run append-card-history <cardId> <startDateTime || null> <endDateTime || null>
 ```
 
 - Will get or create src/tmp/even_card_movements.csv
+- Accepting cardId startDateTime endDateTime
+- cardId - card ID
+- startDateTime (optional) - put a dt formatted string if filled e.g 2024-01-01 2024-01-01T00:00:00Z
+- endDateTime (optional) - put a dt formatted string if filled e.g 2024-01-01 2024-01-01T00:00:00Z
+- if no startDate or no endDate specified, will get all possible history of that card
 - Append the new event in that file.
 
-8. Bonus Step 8: Trello Hook to Sheets
+8. Step 8: Status Cards CSV
 
-- This is connected to trello via /webhook
-- In which will update the sheet live as the user will move the cards on the board lists
-- [Viewable here](https://docs.google.com/spreadsheets/d/16ujg-jDSlPYG6t7ic7kiGCoGSOoPzeXAFj9mJRMaQRA/edit?usp=sharing)
+```
+  npm run update-cards-status
+```
+
+- Fetch all rows in src/tmp/card_status.csv
+- Fetch all new rows in all boards
+- Get the corresponding details
+- If row doesnt exist update it as Deleted
+- Update src/tmp/card_status.csv
 
 ### Screenshots and Outputs
 
-- Uploaded here in [Gdrive](https://drive.google.com/drive/folders/1Ww6_E1A5NDja5rQiNeewrsbVGjH7tE17?usp=sharing)
+- Uploaded here in [Gdrive](https://drive.google.com/drive/folders/1txVZhR8oMEgHtob9l5ndJWF_R6LS7a_f?usp=sharing)
 - env keys are here also for the sake of demonstration
 - For CSV file [search here](https://github.com/Kiel-Hyre/trello-card-movement-tracker/tree/main/src/tmp)
 

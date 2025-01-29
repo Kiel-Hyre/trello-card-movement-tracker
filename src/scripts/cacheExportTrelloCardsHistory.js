@@ -1,81 +1,114 @@
 import fs from 'fs';
 import path from 'path';
-import retrieveCardActions from './services/retrieveCardActions.js';
+
 import retrieveCards from './services/retrieveCards.js';
-import exportCardActions from './services/exportCardActions.js';
+import retrieveBoards from './services/retrieveBoards.js';
+import { retrieveHistory, parseHistory, parseHistoryCSV } from './services/retrieveCardHistory.js';
+
 
 const CACHE_DIR = path.join('src', 'tmp');
 const CACHE_TIMELOG_FILE = path.join(CACHE_DIR, 'cache_timelog.txt');
-const CACHE_MOVEMENTS_FILE = path.join(CACHE_DIR, 'cached_card_movements.csv');
+const CACHE_MOVEMENT_FILENAME = 'cache_card_movements.csv'
+const CACHE_MOVEMENTS_FILE = path.join(CACHE_DIR, CACHE_MOVEMENT_FILENAME);
 
-// Fetch movement events for cards on a specific board
-const cacheExportTrelloCardsHistory = async (boardId) => {
-  // Ensure the cache directory exists
+
+const cacheExportTrelloCardsHistory = async () => {
+
   fs.mkdirSync(CACHE_DIR, { recursive: true });
 
   const now = new Date();
+  let isUpdated = false;
 
-  // Check if cache_timelog.txt exists
-  let isOlderThan24Hours = true;
+  let cachedTime = now
+
   if (fs.existsSync(CACHE_TIMELOG_FILE)) {
+
     const cachedTimelog = fs.readFileSync(CACHE_TIMELOG_FILE, 'utf-8');
-    const cachedTime = new Date(cachedTimelog);
-    isOlderThan24Hours = (now - cachedTime) > 24 * 60 * 60 * 1000;
+    cachedTime = new Date(cachedTimelog);
+
+    if (cachedTime >= now) {
+      isUpdated = true;
+    }
+    
   } else {
-    // Create the timelog file with the current datetime if it doesn't exist
-    console.log('Timelog file not found. Creating a new one.');
+    console.log('Timelog file not found. Creating a new one with the current timestamp.');
     fs.writeFileSync(CACHE_TIMELOG_FILE, now.toISOString(), 'utf-8');
   }
 
-  // If the cache is valid and the CSV file exists, use the cached CSV
-  if (!isOlderThan24Hours && fs.existsSync(CACHE_MOVEMENTS_FILE)) {
+  if (isUpdated) {
     console.log(`Cache is up to date. Using cached data from ${CACHE_MOVEMENTS_FILE}`);
-    return;
+    return true;
+
   } else {
-    console.log(`Fetching new data`)
+    console.log('Cached log is outdated. Fetching new data.');
   }
 
-  // Update the cache timestamp
+  // update the timelog
   fs.writeFileSync(CACHE_TIMELOG_FILE, now.toISOString(), 'utf-8');
 
-  // Retrieve new data
-  const cards = await retrieveCards(boardId);
-  console.log(`Fetched ${cards.length} cards from board ID: ${boardId}`);
+  let boards = null
+  let cards = null
+  let histories = []
 
-  const movements = [];
+  // if no movement file exist fetch the latest
+  if (!fs.existsSync(CACHE_MOVEMENTS_FILE)) {
 
-  for (const card of cards) {
-    const actions = await retrieveCardActions(card.id);
+    boards = await retrieveBoards()
 
-    actions.forEach((action) => {
-      if (action.type === 'updateCard' && action.data.listBefore && action.data.listAfter) {
-        movements.push({
-          cardName: card.name,
-          oldList: action.data.listBefore.name,
-          newList: action.data.listAfter.name,
-          timestamp: action.date,
-        });
+    for (const board of boards) {
+
+      console.log(`Board ${board.id} - ${board.name}`)
+
+      cards = await retrieveCards(board.id);
+
+      for (const card of cards) {
+        console.log("Get Card History ", card.id, "-", card.name)
+        let history = await retrieveHistory(card)
+        histories.push(...history)
       }
-    });
+    }
+    let filePath = await parseHistoryCSV(histories, CACHE_MOVEMENT_FILENAME)
+    console.log(`Export Complete view at ${filePath}`)
+    return true
   }
 
-  if (movements.length === 0) {
-    console.log('No card movement events found.');
+  // get from cacheTime as start
+
+  boards = await retrieveBoards()
+
+  for (const board of boards) {
+
+    console.log(`Board ${board.id} - ${board.name}`)
+    cards = await retrieveCards(board.id);
+    for (const card of cards) {
+      console.log("Get Card History ", card.id, "-", card.name)
+      let history = await retrieveHistory(card, 19, 'all', cachedTime, null)
+      histories.push(...history)
+    }
+  }
+  const newMovements = await parseHistory(histories, false, true);
+
+  if (newMovements.length > 0) {
+    const csvRows = newMovements
+      .map(movement => `${movement.card_id},${movement.card_name},${movement.from_board_id},${movement.from_board_name},${movement.from_list_id},${movement.from_list_name},${movement.to_board_id},${movement.to_board_name},${movement.to_list_id},${movement.to_list_name},${movement.timestamp},${movement.remarks}`)
+      .join('\n');
+
+    fs.appendFileSync(CACHE_MOVEMENTS_FILE, csvRows + '\n', 'utf-8');
+    console.log(`Added ${newMovements.length} new rows to ${CACHE_MOVEMENTS_FILE}`);
   } else {
-    console.log(`Writing ${movements.length} card movement events to CSV...`);
+    console.log(`No movement`)
   }
 
-  const filePath = await exportCardActions(movements, 'cached_card_movements.csv');
-  console.log(`Card movement data saved to ${filePath}`);
 };
 
-// Get board ID from command-line arguments or exit if not provided
-const boardId = process.argv[2] || process.env.DEFAULT_BOARD_ID;
 
-if (!boardId) {
-  console.error('Board ID is required. Pass it as a command-line argument or set DEFAULT_BOARD_ID in .env.');
-  process.exit(1);
-}
+// Get board ID from command-line arguments or exit if not provided
+// const boardId = process.argv[2] || process.env.DEFAULT_BOARD_ID;
+
+// if (!boardId) {
+//   console.error('Board ID is required. Pass it as a command-line argument or set DEFAULT_BOARD_ID in .env.');
+//   process.exit(1);
+// }
 
 // Run the script
-cacheExportTrelloCardsHistory(boardId);
+cacheExportTrelloCardsHistory();

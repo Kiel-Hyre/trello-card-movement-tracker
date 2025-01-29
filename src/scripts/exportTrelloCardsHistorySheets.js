@@ -1,50 +1,44 @@
 
-import retrieveCardActions from './services/retrieveCardActions.js';
 import retrieveCards from './services/retrieveCards.js';
-import exportCardActionsSheets from './services/exportCardActionsSheets.js';
+import retrieveBoards from './services/retrieveBoards.js';
+import { retrieveHistory, parseHistorySheets } from './services/retrieveCardHistory.js';
 
 
 // Fetch movement events for cards on a specific board
-const exportTrelloCardsHistorySheets = async (boardId) => {
+const exportTrelloCardsHistorySheets = async () => {
 
-  const cards = await retrieveCards(boardId)
-  console.log(`Fetched ${cards.length} cards from board ID: ${boardId}`);
+  const boards = await retrieveBoards()
+  
+  let histories = []
+  
+  for (const board of boards) {
 
-  const movements = [];
+    console.log(`Board ${board.id} - ${board.name}`)
 
-  for (const card of cards) {
-    const actions = await retrieveCardActions(card.id)
+    const cards = await retrieveCards(board.id)
 
-    actions.forEach((action) => {
-      if (action.type === 'updateCard' && action.data.listBefore && action.data.listAfter) {
-        movements.push({
-          cardName: card.name,
-          oldList: action.data.listBefore.name,
-          newList: action.data.listAfter.name,
-          timestamp: action.date,
-        });
-      }
-    });
+    // Fetch actions for each card
+    for (const card of cards) {
+      console.log("Get Card History ", card.id, "-", card.name)
+      let history = await retrieveHistory(card)
+      histories.push(...history)
+    }
   }
 
-  if (movements.length === 0) {
-    console.log('No card movement events found.');
-  } else {
-    console.log(`Writing ${movements.length} card movement events to CSV...`);
-  }
+  let sheetPath = await parseHistorySheets(histories)
+  console.log(`Export Sheet Complete: ${sheetPath}`)
+  return true
 
-  const {message} = await exportCardActionsSheets(movements)
-  console.log(`Card movement data saved. ${message}`);
 };
 
 
 // Get board ID from command-line arguments or exit if not provided
-const boardId = process.argv[2] || process.env.DEFAULT_BOARD_ID;
+// const boardId = process.argv[2] || process.env.DEFAULT_BOARD_ID;
 
-if (!boardId) {
-  console.error('Board ID is required. Pass it as a command-line argument or set DEFAULT_BOARD_ID in .env.');
-  process.exit(1);
-}
+// if (!boardId) {
+//   console.error('Board ID is required. Pass it as a command-line argument or set DEFAULT_BOARD_ID in .env.');
+//   process.exit(1);
+// }
 
 // Run the script
-exportTrelloCardsHistorySheets(boardId);
+exportTrelloCardsHistorySheets();

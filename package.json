@@ -11,11 +11,12 @@
     "test": "jest -i --colors --verbose --detectOpenHandles",
     "test:watch": "jest -i --watchAll",
     "get-boards": "node src/scripts/getTrelloBoards.js",
-    "get-card-history": "node src/scripts/getTrelloCardsHistory.js",
-    "export-card-history": "node src/scripts/exportTrelloCardsHistory.js",
-    "cached-export-card-history": "node src/scripts/cacheExportTrelloCardsHistory.js",
-    "export-card-history-sheets": "node src/scripts/exportTrelloCardsHistorySheets.js",
-    "event-card-history": "node src/scripts/eventTrelloCardsHistory.js"
+    "get-cards-history": "node src/scripts/getTrelloCardsHistory.js",
+    "export-cards-history": "node src/scripts/exportTrelloCardsHistory.js",
+    "cached-export-cards-history": "node src/scripts/cacheExportTrelloCardsHistory.js",
+    "export-cards-history-sheets": "node src/scripts/exportTrelloCardsHistorySheets.js",
+    "append-card-history": "node src/scripts/eventTrelloCardsHistory.js",
+    "update-cards-status": "node src/scripts/updateTrelloCardsStatus.js"
   },
   "author": "Vince Isip <vinceadisip@gmail.com>",
   "license": "ISC",
