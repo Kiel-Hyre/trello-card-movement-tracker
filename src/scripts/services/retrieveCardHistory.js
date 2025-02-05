@@ -73,13 +73,12 @@ export const parseHistory = async (history, printed = true, returnAsArray = fals
         break
 
       case 'moveCardFromBoard':
-
         event = 'Move Card Board'
         card = action.data.card
         fromBoard = action.data.board
         fromList = action.data.list
-        toBoard = action.toBoard.data.board
-        toList = action.toBoard.data.list
+        toBoard = action.toBoard.data.board || null
+        toList = action.toBoard.data.list || null
         timeStamp = action.date
         break
 
@@ -100,13 +99,13 @@ export const parseHistory = async (history, printed = true, returnAsArray = fals
 
     if (printed) {
       console.log(
-        `${event} `
-        + `Card ${card.id} - ${card.name} `
-        + `From Board ${fromBoard.id} - ${fromBoard.name} `
-        + `List ${fromList.id} - ${fromList.name} `
-        + `To Board ${toBoard.id} - ${toBoard.name} `
-        + `List ${toList.id} - ${toList.name} `
-        + `At ${timeStamp}`
+        `\n${event} \n`
+        + `Card ${card.id} - ${card.name} \n`
+        + `From Board ${fromBoard.id} - ${fromBoard.name} \n`
+        + `List ${fromList.id} - ${fromList.name} \n`
+        + `To Board ${toBoard.id} - ${toBoard.name} \n`
+        + `List ${toList.id} - ${toList.name} \n`
+        + `At ${timeStamp} \n`
       );
     }
 

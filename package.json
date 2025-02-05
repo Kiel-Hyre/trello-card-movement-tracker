@@ -16,7 +16,9 @@
     "cached-export-cards-history": "node src/scripts/cacheExportTrelloCardsHistory.js",
     "export-cards-history-sheets": "node src/scripts/exportTrelloCardsHistorySheets.js",
     "append-card-history": "node src/scripts/eventTrelloCardsHistory.js",
-    "update-cards-status": "node src/scripts/updateTrelloCardsStatus.js"
+    "update-cards-status": "node src/scripts/updateTrelloCardsStatus.js",
+
+    "cached-export-cards-history-v2": "node src/scripts/cacheExportTrelloCardsHistoryV2.js"
   },
   "author": "Vince Isip <vinceadisip@gmail.com>",
   "license": "ISC",
